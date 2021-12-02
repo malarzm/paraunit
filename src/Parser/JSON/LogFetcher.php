@@ -40,9 +40,9 @@ class LogFetcher
         if (file_exists($filePath)) {
             /** @var string $fileContent */
             $fileContent = file_get_contents($filePath);
-            $this->output->writeln('LOGS FOR ' . $process->getFilename());
-            $this->output->writeln($fileContent);
-            $this->output->writeln('--------');
+//            $this->output->writeln('LOGS FOR ' . $process->getFilename());
+//            $this->output->writeln($fileContent);
+//            $this->output->writeln('--------');
             unlink($filePath);
         }
 

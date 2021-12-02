@@ -47,6 +47,7 @@ class DebugPrinter extends AbstractPrinter implements EventSubscriberInterface
         $this->getOutput()->writeln('');
         $this->getOutput()->writeln('PROCESS TERMINATED [' . (($end-$start)/1e+6) . 'ms]: ' . $process->getFilename());
         $this->getOutput()->writeln(' - with class name: ' . $process->getTestClassName() ?? 'N/A');
+        $this->getOutput()->writeln('stderr: ' . $process->getErrorOutput());
         $this->getOutput()->writeln('');
     }
 
