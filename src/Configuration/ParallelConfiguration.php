@@ -76,9 +76,9 @@ class ParallelConfiguration
         $containerBuilder->setParameter('paraunit.string_filter', $input->getArgument('stringFilter'));
         $containerBuilder->setParameter('paraunit.show_logo', $input->getOption('logo'));
 
-        if ($input->getOption('debug')) {
+//        if ($input->getOption('debug')) {
             $this->enableDebugMode($containerBuilder);
-        }
+//        }
     }
 
     private function enableDebugMode(ContainerBuilder $containerBuilder): void
