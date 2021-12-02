@@ -6,6 +6,8 @@ namespace Paraunit\Parser\JSON;
 
 use Paraunit\Configuration\TempFilenameFactory;
 use Paraunit\Process\AbstractParaunitProcess;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class LogFetcher
 {
@@ -13,10 +15,18 @@ class LogFetcher
 
     /** @var TempFilenameFactory */
     private $fileName;
+    /** @var OutputInterface */
+    private $output;
 
     public function __construct(TempFilenameFactory $fileName)
     {
         $this->fileName = $fileName;
+        $this->output = new NullOutput();
+    }
+
+    public function setOutput(OutputInterface $output): void
+    {
+        $this->output = $output;
     }
 
     /**
@@ -30,6 +40,9 @@ class LogFetcher
         if (file_exists($filePath)) {
             /** @var string $fileContent */
             $fileContent = file_get_contents($filePath);
+            $this->output->writeln('LOGS FOR ' . $process->getFilename());
+            $this->output->writeln($fileContent);
+            $this->output->writeln('--------');
             unlink($filePath);
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Paraunit\Configuration;
 
 use Paraunit\Configuration\DependencyInjection\ParallelContainerDefinition;
+use Paraunit\Parser\JSON\LogFetcher;
 use Paraunit\Printer\DebugPrinter;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -87,6 +88,9 @@ class ParallelConfiguration
         $definition->addTag(self::TAG_EVENT_SUBSCRIBER);
 
         $containerBuilder->setDefinition(DebugPrinter::class, $definition);
+
+        $logFetcher = $containerBuilder->getDefinition(LogFetcher::class);
+        $logFetcher->addMethodCall('setOutput', [new Reference(OutputInterface::class)]);
     }
 
     private function createPublicAliases(ContainerBuilder $containerBuilder): void

@@ -12,6 +12,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DebugPrinter extends AbstractPrinter implements EventSubscriberInterface
 {
+    private $hrStart = [];
+
     /**
      * @return array<string, string|(string|int)[]>
      */
@@ -29,6 +31,7 @@ class DebugPrinter extends AbstractPrinter implements EventSubscriberInterface
     {
         $process = $event->getProcess();
 
+        $this->hrStart[$process->getFilename()] = hrtime(true);
         $this->getOutput()->writeln('PROCESS STARTED: ' . $process->getFilename());
         $this->getOutput()->writeln($process->getCommandLine());
         $this->getOutput()->writeln('');
@@ -38,8 +41,11 @@ class DebugPrinter extends AbstractPrinter implements EventSubscriberInterface
     {
         $process = $event->getProcess();
 
+        $start = $this->hrStart[$process->getFilename()];
+        $end = hrtime(true);
+
         $this->getOutput()->writeln('');
-        $this->getOutput()->writeln('PROCESS TERMINATED: ' . $process->getFilename());
+        $this->getOutput()->writeln('PROCESS TERMINATED [' . (($end-$start)/1e+6) . 'ms]: ' . $process->getFilename());
         $this->getOutput()->writeln(' - with class name: ' . $process->getTestClassName() ?? 'N/A');
         $this->getOutput()->writeln('');
     }
